@@ -33,13 +33,13 @@ export const CITY_PHOTOS: Record<string, string[]> = {
   "San Francisco": [sanFrancisco.url],
 };
 export const HERO_PHOTOS = [
-  { src: bridge.url, label: "New York" },
+  { src: fallbackStreet.url, label: "A new city awaits" },
   { src: londonStreet.url, label: "London" },
   { src: cafe.url, label: "A familiar ritual" },
   { src: lagos.url, label: "Lagos" },
   { src: amsterdam.url, label: "Amsterdam" },
 ];
-export const DEFAULT_PANEL_PHOTO = panel.url;
+export const DEFAULT_PANEL_PHOTO = fallbackStreet.url;
 export const CAFE_PHOTO = cafe.url;
 export const FOOD_PHOTO = food.url;
 export function cityPhoto(city: string, index = 0): string {

@@ -128,6 +128,8 @@ function Index() {
     tts.cancel();
     if (stt.listening) stt.stop();
     setMsgs([]);
+    setCity(null);
+    setSnapNotice(null);
     setInput("");
     setBusy(false);
     window.setTimeout(() => {
@@ -337,11 +339,7 @@ function Index() {
             <section id="pick-city" className="city-panel section-space">
               <img
                 className="panel-photo"
-                src={
-                  !city || city.city.name === "New York City"
-                    ? DEFAULT_PANEL_PHOTO
-                    : cityPhoto(city.city.name)
-                }
+                src={city ? cityPhoto(city.city.name) : DEFAULT_PANEL_PHOTO}
                 alt={city ? `${city.city.name} skyline` : "A new city awaits"}
               />
               <div>
@@ -408,6 +406,15 @@ function Index() {
                 )}
               </div>
             </section>
+            {!city && (
+              <section id="how-it-works" className="section-space text-center" role="status">
+                <Globe2 className="mx-auto mb-5 h-6 w-6 text-muted-foreground" aria-hidden="true" />
+                <h2 className="section-title">Pick a city to see your matches</h2>
+                <Button onClick={focusDestination} className="mt-6 text-xs">
+                  Pick a city <ArrowRight className="h-4 w-4" />
+                </Button>
+              </section>
+            )}
             {city && <section id="how-it-works" className="section-space">
               <div className="mb-9 flex flex-wrap items-end justify-between gap-4">
                 <h2 className="section-title">
