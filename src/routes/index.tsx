@@ -422,7 +422,7 @@ function Index() {
                 </h2>
                 <p className="eyebrow pb-2 text-muted-foreground">Matched by Qloo</p>
               </div>
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              <div className={`grid gap-8 sm:grid-cols-2 ${preview.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"}`}>
                 {preview.map((n, i) => (
                   <NeighborhoodCard key={n.name} n={n} city={city.city.name} index={i} />
                 ))}
