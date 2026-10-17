@@ -46,3 +46,18 @@ export function cityPhoto(city: string, index = 0): string {
   const images = CITY_PHOTOS[city] ?? [fallback.url, fallbackStreet.url];
   return images[index % images.length] ?? fallback.url;
 }
+
+export type NeighborhoodPhoto = {
+  src: string;
+  alt: string;
+  source?: string;
+  photographer?: string;
+};
+const NEIGHBORHOOD_PHOTOS: Record<string, NeighborhoodPhoto> = {};
+
+export function neighborhoodPhoto(city: string, neighborhood: string, index = 0): NeighborhoodPhoto {
+  return NEIGHBORHOOD_PHOTOS[`${city}:${neighborhood}`] ?? {
+    src: cityPhoto(city, index),
+    alt: `${city} city view`,
+  };
+}
