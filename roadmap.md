@@ -1,4 +1,4 @@
 # Roadmap
-- [x] Remove remaining default destinations and show the requested empty state before selection.
-- [x] Make Change city clear the destination and reopen selection while preserving existing features and design.
-- [x] Verify city selection, recommendations, and changing cities with tests and the live app.
+- [ ] Add verified neighborhood-specific Unsplash imagery and polish match badges, tags, and concise fit descriptions.
+- [ ] Group the existing persisted 30-day checklist under clear week headings.
+- [ ] Verify city-neutral initial state, city changes, and polished cards/checklist on desktop and mobile.
