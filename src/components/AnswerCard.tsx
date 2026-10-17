@@ -11,7 +11,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import type { AgentResult, AgentStep, NeighborhoodMatch, Place } from "@/lib/agent";
-import { cityPhoto } from "@/lib/photos";
+import { neighborhoodPhoto } from "@/lib/photos";
 import { Button } from "./Button";
 
 function Collapsible({ title, children }: { title: string; children: React.ReactNode }) {
@@ -54,6 +54,31 @@ export function StepList({ steps, pending }: { steps: AgentStep[]; pending?: boo
   );
 }
 const label = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+const FIT_LINES: Record<string, string> = {
+  "Bed-Stuy": "Brownstones, bold flavors, and a deep music scene.",
+  Harlem: "Live jazz and West African flavors on your doorstep.",
+  "Crown Heights": "Caribbean comfort with room in your budget.",
+  Astoria: "Quiet café mornings and independent cinema.",
+  Williamsburg: "Specialty coffee meets an indie creative scene.",
+  "Jackson Heights": "A world of flavors at neighborhood prices.",
+  "Lower East Side": "Cinema, streetwear, and nights that run late.",
+  "Park Slope": "Leafy streets, bookshops, and slow mornings.",
+  Peckham: "Bold flavors and music with a community heartbeat.",
+  Hackney: "Independent cinema, great coffee, and warehouse gigs.",
+  Hampstead: "Village lanes and unhurried bookshop afternoons.",
+  "Little Jamaica": "Reggae, Caribbean flavors, and real community.",
+  "Kensington Market": "Vintage finds and affordable café afternoons.",
+  "The Annex": "Bookshops and cinema among Victorian homes.",
+  Neukölln: "Canal-side evenings and affordable food discoveries.",
+  Kreuzberg: "Street art, late bites, and a music-first spirit.",
+  "Prenzlauer Berg": "Leafy squares and leisurely café Sundays.",
+  "Al Karama": "South Asian flavors without the big-city price tag.",
+  "Jumeirah Lake Towers": "Lakeside coffee with nightlife close by.",
+  "Al Barsha": "A calmer base with cafés and cinema nearby.",
+  Yaba: "Creative energy, local flavors, and friendly cafés.",
+  "Lekki Phase 1": "Beachside nights with an Afrobeats soundtrack.",
+  "Ikeja GRA": "Leafy streets and a quieter everyday rhythm.",
+};
 export function NeighborhoodCard({
   n,
   city,
@@ -63,18 +88,26 @@ export function NeighborhoodCard({
   city: string;
   index?: number;
 }) {
+  const photo = neighborhoodPhoto(city, n.name, index);
+  const tags = [...new Set([...n.matched, ...n.tags])].slice(0, 3);
   return (
-    <article className="min-w-0">
-      <div className="relative">
+    <article className="neighborhood-card min-w-0">
+      <div className="neighborhood-image-wrap">
         <img
-          src={cityPhoto(city, index)}
-          alt={`${city} city view`}
+          src={photo.src}
+          alt={photo.alt}
           className="neighborhood-photo"
           loading="lazy"
+          decoding="async"
         />
-        <span className="absolute left-4 top-4 rounded-full bg-card px-3 py-2 text-[11px]">
-          {n.score}% match
+        <span className="match-badge">
+          <span className="match-dot" /> <strong>{n.score}%</strong> match
         </span>
+        {photo.source && (
+          <a href={photo.source} target="_blank" rel="noreferrer" className="photo-credit">
+            {photo.photographer} / Unsplash
+          </a>
+        )}
       </div>
       <div className="mt-5 flex items-start justify-between gap-2">
         <h3 className="neighborhood-name">{n.name}</h3>
@@ -84,7 +117,7 @@ export function NeighborhoodCard({
         {city} · {n.borough}
       </p>
       <div className="mt-4 flex flex-wrap gap-1.5">
-        {n.tags.slice(0, 3).map((t) => (
+        {tags.map((t) => (
           <span className="outline-tag" key={t}>
             {label(t)}
           </span>
@@ -92,8 +125,8 @@ export function NeighborhoodCard({
       </div>
       <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
         {n.matched.length
-          ? `Your love of ${n.matched.slice(0, 3).join(", ")} feels right at home here.`
-          : n.why}
+          ? `A local rhythm for your love of ${n.matched.slice(0, 2).join(" and ")}.`
+          : FIT_LINES[n.name] ?? n.why}
       </p>
       <p className="mt-4 border-t pt-3 text-xs">
         <span className="text-muted-foreground">Rent · 1BR </span>
@@ -182,9 +215,15 @@ export function Timeline({ plan, city }: { plan: AgentResult["plan"]; city: stri
           {done.length} of {total} little steps complete
         </p>
       </div>
-      <div>
+      <div className="plan-weeks">
         {plan.map((w) => (
-          <div key={w.week}>
+          <div key={w.week} className="plan-week">
+            <div className="mb-2 flex items-baseline justify-between gap-3">
+              <h3 className="font-display text-3xl">{w.week}</h3>
+              <span className="text-[10px] text-muted-foreground">
+                {w.items.filter((it) => done.includes(`${w.week}|${it}`)).length} / {w.items.length}
+              </span>
+            </div>
             {w.items.map((it) => {
               const key = `${w.week}|${it}`;
               const checked = done.includes(key);
@@ -195,7 +234,7 @@ export function Timeline({ plan, city }: { plan: AgentResult["plan"]; city: stri
                   role="checkbox"
                   aria-checked={checked}
                   onClick={() => toggle(key)}
-                  className="flex w-full items-center gap-3 border-b py-4 text-left text-xs leading-relaxed"
+                  className="plan-item flex w-full items-center gap-3 border-b py-4 text-left text-[13px] leading-relaxed"
                 >
                   <span
                     className={`plan-check ${checked ? "bg-foreground text-primary-foreground" : ""}`}
@@ -205,7 +244,6 @@ export function Timeline({ plan, city }: { plan: AgentResult["plan"]; city: stri
                   <span className={`flex-1 ${checked ? "text-muted-foreground line-through" : ""}`}>
                     {it}
                   </span>
-                  <span className="shrink-0 text-[10px] text-muted-foreground">{w.week}</span>
                 </Button>
               );
             })}
