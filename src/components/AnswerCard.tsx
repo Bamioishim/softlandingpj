@@ -108,6 +108,7 @@ export function NeighborhoodCard({
             {photo.photographer} / Unsplash
           </a>
         )}
+        {!photo.source && <span className="photo-credit">{city} · City view</span>}
       </div>
       <div className="mt-5 flex items-start justify-between gap-2">
         <h3 className="neighborhood-name">{n.name}</h3>
