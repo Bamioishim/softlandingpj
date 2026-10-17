@@ -1,6 +1,4 @@
 # Roadmap
-- [ ] Start with no destination, hide city content until selected, and remove arbitrary NYC matching.
-- [ ] Replace the dark presentation with the approved cream, serif, photo-led design.
-- [ ] Restyle neighborhood/place results, persisted checklist, and reasoning panel without changing mock logic.
-- [ ] Preserve voice, city snapping, mode switch, chat, About, and focused Change city reset.
-- [ ] Verify desktop/mobile presentation and chat flow.
+- [x] Remove remaining default destinations and show the requested empty state before selection.
+- [x] Make Change city clear the destination and reopen selection while preserving existing features and design.
+- [x] Verify city selection, recommendations, and changing cities with tests and the live app.

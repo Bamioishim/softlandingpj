@@ -63,7 +63,7 @@ export async function runAgent(
   userMessage: string,
   mode: Mode = "qloo",
   onStep?: (step: AgentStep, index: number) => void,
-  city = "New York City",
+  city?: string,
 ): Promise<AgentResult> {
   const steps: AgentStep[] = [];
   const step = async (label: string, ms: number) => {
@@ -73,7 +73,9 @@ export async function runAgent(
     onStep?.(s, steps.length - 1);
   };
 
-  const data = CITY_DATA[city] ?? CITY_DATA["New York City"]!;
+  if (!city) throw new Error("Pick a city to see your matches");
+  const data = CITY_DATA[city];
+  if (!data) throw new Error("Choose a supported city before finding matches");
   const NEIGHBORHOODS = data.neighborhoods;
   const PLACES = data.places;
   const tastes = extract(userMessage);

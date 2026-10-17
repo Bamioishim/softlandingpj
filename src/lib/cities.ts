@@ -14,7 +14,7 @@ import { SUPPORTED_CITY_NAMES } from "./city-data";
 import worldCities from "./world-cities.json";
 
 const RAW_CITIES: City[] = [
-  // Supported (full data today: NYC; others fall back to the mock dataset)
+  // Availability is derived from each city's own mock dataset below.
   { name: "New York City", country: "USA", lat: 40.7128, lng: -74.006, supported: true },
   { name: "Los Angeles", country: "USA", lat: 34.0522, lng: -118.2437, supported: true },
   { name: "Chicago", country: "USA", lat: 41.8781, lng: -87.6298, supported: true },
