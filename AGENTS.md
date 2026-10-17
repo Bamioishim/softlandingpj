@@ -12,5 +12,6 @@
 - Agent logic lives in src/lib/agent.ts (runAgent) as an isolated mock; replace it with Qloo/LLM server-function calls without touching UI.
 - runAgent requires an explicit supported destination and rejects missing or unknown cities instead of substituting another dataset, so recommendations never silently use a default city.
 - Keep city photograph references centralized in src/lib/photos.ts so destination imagery changes consistently without changing the mock agent.
+- Neighborhood photo lookup uses city-and-neighborhood keys with source attribution; unavailable exact-location photos are explicitly labeled city views to avoid false geographic claims.
 - Use shared Button, NeighborhoodCard and Timeline presentation for landing previews and chat so both experiences retain consistent controls and checklist storage.
 - Resolve unsupported destinations from a local GeoNames city-coordinate index (CC BY 4.0) before geographic snapping; unrecognized text must remain unselected rather than use an arbitrary destination.
